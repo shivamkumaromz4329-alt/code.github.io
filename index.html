@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khatarnak Website</title>
+    <style>
+        body{
+            margin:0;
+            font-family: Arial, sans-serif;
+            background:#0a0a0a;
+            color:white;
+        }
+        .menu{
+            padding:10px;
+            background:#111;
+            display:flex;
+            gap:20px;
+            font-size:14px;
+        }
+        .item{
+            cursor:pointer;
+            user-select:none;
+        }
+        .content{
+            padding:20px;
+            display:none;
+            font-size:14px;
+            margin-top:20px;
+        }
+        .shine{
+            position:fixed;
+            bottom:20px;
+            width:100%;
+            text-align:center;
+            font-size:26px;
+            font-weight:bold;
+            animation:glowMove 5s ease-in-out infinite alternate;
+            color:#fff;
+            text-shadow:0 0 10px #ff0055, 0 0 20px #ff0055;
+        }
+        @keyframes glowMove{
+            0%{transform:translateX(0); text-shadow:0 0 10px #ff0055, 0 0 20px #ff0055;}
+            50%{transform:translateX(-50%); text-shadow:0 0 20px #00eaff, 0 0 40px #00eaff;}
+            100%{transform:translateX(0); text-shadow:0 0 10px #ff0055, 0 0 20px #ff0055;}
+        }
+        .sidebar{
+            position:fixed;
+            top:220px;
+            right:20px;
+            background:#222;
+            padding:10px;
+            border-radius:8px;
+            width:220px;
+        }
+        .search-box input{
+            width:100%;
+            padding:6px;
+            border-radius:4px;
+            border:none;
+            margin-bottom:10px;
+        }
+        .plus-btn{
+            background:#0f0;
+            border:none;
+            border-radius:50%;
+            width:30px;
+            height:30px;
+            font-weight:bold;
+            cursor:pointer;
+        }
+        .plus-menu{
+            display:none;
+            background:#333;
+            margin-top:5px;
+            border-radius:4px;
+            padding:5px;
+            text-align:left;
+        }
+        .plus-menu div{
+            padding:5px;
+            cursor:pointer;
+        }
+        .plus-menu div:hover{
+            background:#555;
+        }
+        .send-btn{
+            width:100%;
+            padding:6px;
+            border:none;
+            border-radius:4px;
+            background:#00f;
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+            margin-top:5px;
+        }
+        .response-box{
+            margin-top:10px;
+            background:#111;
+            padding:10px;
+            border-radius:4px;
+            height:100px;
+            overflow-y:auto;
+        }
+        .signup-btn{
+            position:fixed;
+            bottom:20px;
+            right:20px;
+            background:#db4437;
+            color:white;
+            padding:10px 15px;
+            border:none;
+            border-radius:4px;
+            cursor:pointer;
+            font-weight:bold;
+        }
+        .day-form{
+            position:fixed;
+            top:320px;
+            left:20px;
+            background:#222;
+            padding:10px;
+            border-radius:8px;
+            width:180px;
+            display:flex;
+            flex-direction:column;
+            gap:5px;
+        }
+        .day-form div{
+            padding:5px;
+            text-align:center;
+            border-radius:4px;
+            background:#111;
+        }
+        .day-form .today{
+            background:#0f0;
+            color:#000;
+            font-weight:bold;
+        }
+        .bottom-links{
+            position:fixed;
+            bottom:120px;
+            width:100%;
+            text-align:center;
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+            font-weight:bold;
+        }
+        .bottom-links a{
+            color:#0af;
+            text-decoration:none;
+        }
+        .form-center{
+            position:fixed;
+            top:80px; /* form moved up */
+            left:50%;
+            transform:translateX(-50%);
+            background:#222;
+            padding:20px;
+            border-radius:10px;
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+            width:250px;
+        }
+        .form-center input, .form-center select, .form-center button{
+            padding:6px;
+            border-radius:4px;
+            border:none;
+        }
+        .submit-btn{
+            padding:10px;
+            background:#0f0;
+            font-weight:bold;
+            cursor:pointer;
+        }
+        .contact-bottom{
+            position:fixed;
+            bottom:0;
+            right:20px;
+            background:#111;
+            padding:10px;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .apply-btn{
+            position:fixed;
+            bottom:60px; /* apply form stays much lower */
+            right:20px;
+            background:linear-gradient(45deg,#ff0055,#00eaff);
+            padding:15px 20px;
+            font-weight:bold;
+            font-size:16px;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+            box-shadow:0 5px 15px rgba(0,0,0,0.5);
+            color:white;
+            text-shadow:1px 1px 2px #000;
+        }
+        .registration-form{
+            display:none;
+            position:fixed;
+            bottom:10px;
+            left:50%;
+            transform:translateX(-50%);
+            background:#333;
+            padding:20px;
+            border-radius:10px;
+            width:300px;
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="menu">
+    <div class="item" onclick="toggle('about')">About ▼</div>
+    <div class="item" onclick="toggle('contact')">Contact ▼</div>
+    <div class="item" onclick="window.location.href='https://chatgpt.com/c/6928814b-e040-8324-b99d-5c43eae21ad4'">Chat GPT ▼</div>
+    <div class="item" onclick="window.location.href='mailto:shivamkumaromz4329@gmail.com'">Passport ▼</div>
+</div>
+
+<div id="about" class="content">
+    <p>AI ek aisi technology hai jo insano ki tarah sochne, samajhne aur decision lene ki kshamata rakhti hai.</p>
+</div>
+
+<div id="contact" class="content">
+    <p>Gmail: shivamkumaromz4329@gmail.com</p>
+    <p>Number: 9831480195</p>
+</div>
+
+<div class="shine">SHIVAM</div>
+
+<div class="sidebar">
+    <div class="search-box">
+        <input type="text" id="chatInput" placeholder="Chat GPT me puche...">
+        <button class="send-btn" onclick="sendQuestion()">Send</button>
+    </div>
+    <div class="response-box" id="responseBox">Response yahan dikhega...</div>
+    <button class="plus-btn" onclick="togglePlus()">+</button>
+    <div class="plus-menu" id="plusMenu">
+        <div onclick="window.location.href='gallery/'">Add from Gallery</div>
+        <div onclick="window.location.href='document/'">Add from Document</div>
+    </div>
+</div>
+
+<div class="day-form" id="dayForm">
+    <div>Sunday</div>
+    <div>Monday</div>
+    <div>Tuesday</div>
+    <div>Wednesday</div>
+    <div>Thursday</div>
+    <div>Friday</div>
+    <div>Saturday</div>
+</div>
+
+<div class="form-center" id="userForm">
+    <input type="text" id="userName" placeholder="Write your name">
+    <input type="text" id="birthPlace" placeholder="Write your birth place">
+    <select id="birthMonth" onchange="populateDates()">
+        <option value="">Select Month</option>
+        <option value="1">January</option>
+        <option value="2">February</option>
+        <option value="3">March</option>
+        <option value="4">April</option>
+        <option value="5">May</option>
+        <option value="6">June</option>
+        <option value="7">July</option>
+        <option value="8">August</option>
+        <option value="9">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+    </select>
+    <select id="birthDate">
+        <option value="">Select Date</option>
+    </select>
+    <input type="text" id="age" placeholder="Age">
+    <button class="submit-btn" onclick="finalSubmit()">Final Submit</button>
+</div>
+
+<div class="bottom-links">
+    <div><b>Site Flow:</b> <a href="https://labs.google/flow/about" target="_blank">https://labs.google/flow/about</a></div>
+    <div><b>Chat GPT:</b> <a href="https://chatgpt.com/c/6928814b-e040-8324-b99d-5c43eae21ad4" target="_blank">https://chatgpt.com/c/6928814b-e040-8324-b99d-5c43eae21ad4</a></div>
+    <div><b>Text to Video AI:</b> <a href="https://firefly.adobe.com/generate/video" target="_blank">https://firefly.adobe.com/generate/video</a></div>
+    <div><b>YouTube:</b> <a href="https://www.youtube.com/" target="_blank">https://www.youtube.com/</a></div>
+</div>
+
+<div class="contact-bottom">VISA CSPMEHTA12@GMIL.COM (CONTACT HURRY)</div>
+
+<button class="apply-btn" onclick="toggleRegistration()">Apply for Any Certificate</button>
+
+<div class="registration-form" id="registrationForm">
+    <input type="text" placeholder="Name">
+    <input type="text" placeholder="Address">
+    <select id="certificateType">
+        <option value="">Apply for Certificate</option>
+        <option value="english">English Certificate</option>
+        <option value="cooking">Cooking Certificate</option>
+        <option value="computer">Computer Certificate</option>
+    </select>
+    <input type="text" placeholder="Phone Number">
+    <button onclick="showPayOption()">Submit</button>
+</div>
+
+<script>
+function toggle(id){
+    const section = document.getElementById(id);
+    section.style.display = section.style.display === "block" ? "none" : "block";
+}
+function togglePlus(){
+    const menu = document.getElementById('plusMenu');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+function sendQuestion(){
+    const input = document.getElementById('chatInput').value;
+    const responseBox = document.getElementById('responseBox');
+    if(input.trim()===''){
+        responseBox.innerText = 'Please type a question.';
+        return;
+    }
+    responseBox.innerText = 'Processing... (ye mockup hai, backend connect karna hoga)';
+    setTimeout(()=>{
+        responseBox.innerText = 'Ye example answer hai: "'+input+'"';
+    },1500);
+}
+function highlightToday(){
+    const days = document.querySelectorAll('#dayForm div');
+    const todayIndex = new Date().getDay();
+    days.forEach((day, index)=>{
+        if(index === todayIndex){
+            day.classList.add('today');
+        } else {
+            day.classList.remove('today');
+        }
+    });
+}
+highlightToday();
+setInterval(highlightToday, 60*60*1000);
+function populateDates(){
+    const month = document.getElementById('birthMonth').value;
+    const dateSelect = document.getElementById('birthDate');
+    dateSelect.innerHTML = '<option value="">Select Date</option>';
+    if(month){
+        const daysInMonth = new Date(2025, month, 0).getDate();
+        for(let i=1;i<=daysInMonth;i++){
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = i;
+            dateSelect.appendChild(opt);
+        }
+    }
+}
+function finalSubmit(){
+    alert('Congrats! You are lucky and you can now use your website in free');
+}
+function toggleRegistration(){
+    const form = document.getElementById('registrationForm');
+    form.style.display = form.style.display==='flex'? 'none':'flex';
+}
+function showPayOption(){
+    if(confirm('You are lucky! Pay only 800, click OK to proceed')){
+        window.location.href='tel:9831480195';
+        setTimeout(()=>{
+            window.location.href='mailto:shivamkumaromz4329@gmail.com';
+        },2000);
+    }
+}
+</script>
+
+</body>
+</html>
